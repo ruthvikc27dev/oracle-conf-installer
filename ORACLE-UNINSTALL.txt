@@ -1,0 +1,30 @@
+Automatically -
+
+Run the deinstall script in the $ORACLE_HOME/deinstall folder. 
+Select the default options unless you need to drop or delete schemas and listeners. 
+Type y to continue. After the script finishes, remove the oracle folder.
+
+Manually -
+
+UNIX
+Uninstalling all products from UNIX is a lot more consistent. If you do need to resort to a manual uninstall you should do something like:
+
+Uninstall all Oracle components using the Oracle Universal Installer (OUI).
+Stop any outstanding processes using the appropriate utilities.
+
+$ dbshut $ORACLE_HOME
+Alternatively you can kill them using the kill -9 pid command as the root user.
+Delete the files and directories below the $ORACLE_HOME.
+
+# cd $ORACLE_HOME
+# rm -Rf *
+With the exception of the product directory, delete directories below the $ORACLE_BASE.
+
+# cd $ORACLE_BASE
+# rm -Rf admin doc jre o*
+Delete the "/etc/oratab" file. If using 9iAS delete the "/etc/emtab" file also.
+
+# rm /etc/oratab /etc/emtab
+If you are getting rid of the inventory, delete the "/u01/app/oraInventory" directory and "/etc/orainst.loc" file. If you were planning to keep the inventory location, you will need to edit the "/u01/app/oraInventory/ContentsXML/inventory.xml" to remove any removed homes.
+
+# rm -Rf /u01/app/oraInventory /etc/orainst.loc

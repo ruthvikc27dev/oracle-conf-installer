@@ -1,0 +1,61 @@
+sqlplus '/ as sysdba'
+SHOW con_name;
+SHOW con_id;
+SELECT name, con_id, dbid, con_uid, guid FROM v$containers ORDER BY con_id;
+
+COLUMN name FORMAT a20;
+SET LINE 1000;
+CLEAR SCREEN; or cl scr;
+
+
+SELECT name, open_mode FROM v$pdbs;
+SELECT con_id, cdb, name, con_dbid, open_mode FROM v$database;
+
+
+sqlplus '/ as sysdba'
+connect ruthvikc27/2888@ORCLPDB as sysdba
+
+
+------------------------------------------
+
+Pluggable database -
+
+
+
+# To set session for pluggable DB
+ALTER SESSION SET CONTAINER=orclpdb;
+
+# To set session for container DB
+ALTER SESSION SET CONTAINER=cdb$root;
+
+# To shut down pluggable database
+ALTER PLUGGABLE DATABASE orclpdb CLOSE IMMEDIATE;
+
+# Only during maintenance the pluggable database is closed 
+ALTER PLUGGABLE DATABASE orclpdb OPEN;
+
+SHOW PARAMETER db_create_file_dest;
+
+# creating pluggable database
+CREATE PLUGGABLE DATABASE orclpdb ADMIN USER ruthvikc27 IDENTIFIED BY 2888 roles=(connect);
+
+ALTER PLUGGABLE DATABASE orclpdb OPEN;
+
+Steps -
+
+alter session set container=PDB$SEED;
+select FILE_NAME from dba_data_files;
+
+ALTER SESSION SET CONTAINER=cdb$root;
+CREATE PLUGGABLE DATABASE orclpdb ADMIN USER ruthvikc27 IDENTIFIED BY 2888 FILE_NAME_CONVERT=('/opt/oracle/oradata/ORCLCDB/pdbseed','/opt/oracle/oradata/ORCLCDB/ORCLPDB');
+
+ALTER PLUGGABLE DATABASE orclpdb OPEN;
+
+show pdbs;
+
+
+NAMES.DIRECTORY_PATH= (TNSNAMES, ONAMES, HOSTNAME)
+NAMES.DEFAULT_DOMAIN = example.com
+
+# The following entry is necessary on Windows if OS authentication is required.
+SQLNET.AUTHENTICATION_SERVICES= (NTS)
